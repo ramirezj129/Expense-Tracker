@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
+    'expenses',
+    'rest_framework.authtoken',
+    'users',
+    'incomes',
 
 ]
 
@@ -53,11 +57,28 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  # Replace with the URL of your Vue.js frontend
+    'http://localhost:5173',  # Add your frontend origin
 ]
+# Example CORS settings
+CORS_ALLOW_HEADERS = [
+    'Content-Type',
+    'Authorization',
+]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = None
 
 ROOT_URLCONF = 'django_project.urls'
 
@@ -79,6 +100,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.TokenAuthentication',  # Add this line
+
+    ],
+
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

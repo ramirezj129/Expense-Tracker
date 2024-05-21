@@ -17,8 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from expenses import views
+from django.urls import path, include
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.data_view, name='home_api'),
+    path('expense/', views.ExpenseSubmissionView.as_view(), name='expense_submission'),
+    path('expenses/list/', views.ExpenseListView.as_view(), name='expense_list'),
+    path('api/users/', include('users.urls')),
+    path('income/', include('incomes.urls')),
+    
 ]
