@@ -1,37 +1,22 @@
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import Income
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Income
+from .serializer import IncomeSerializer
 
-
-@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_income(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            amount = data.get('amount')
-            description = data.get('description')
-            
-            # Validate data
-            if amount is None or description is None:
-                return JsonResponse({'error': 'Amount and description are required'}, status=400)
-            
-            # Delete all existing income entries
-            Income.objects.all().delete()
+        serializer = IncomeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
-            # Create a new income entry
-            Income.objects.create(amount=amount, description=description)
-            
-            return JsonResponse({'message': 'Income submitted successfully'}, status=201)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-    else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def income_list(request):
-    incomes = list(Income.objects.values())
-    return JsonResponse(incomes, safe=False)
+    incomes = Income.objects.filter(user=request.user)
+    serializer = IncomeSerializer(incomes, many=True)
+    return Response(serializer.data)

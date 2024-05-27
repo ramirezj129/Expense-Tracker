@@ -21,9 +21,8 @@
             <router-link class="nav-link" to="/login">Login</router-link>
           </li>
           <li class="nav-item" v-if="isAuthenticated">
-            <a class="logout nav-link" @click.prevent="logout">Logout</a>
+            <a class="logout nav-link" @click.prevent="handleLogout">Logout</a>
           </li>
-         
         </ul>
       </div>
     </div>
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -40,15 +39,16 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['clearToken']),
+    ...mapActions(['logout']), // Use a different name for the method to avoid conflicts
     toggleNavbar() {
       this.navbarOpen = !this.navbarOpen;
     },
     closeNavbar() {
       this.navbarOpen = false;
     },
-    logout() {
-      this.clearToken();
+    async handleLogout() { // Rename the method
+      await this.logout();
+      localStorage.removeItem('token'); // Remove token from localStorage
       this.$router.push({ name: 'Login' });
     }
   },
@@ -59,8 +59,7 @@ export default {
 </script>
 
 <style scoped>
-/* Add your custom styles here */
-.logout{
+.logout {
   cursor: pointer;
 }
 </style>

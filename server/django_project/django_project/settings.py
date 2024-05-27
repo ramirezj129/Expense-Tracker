@@ -62,6 +62,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # Add your frontend origin
+        "http://127.0.0.1:5173",
+
 ]
 # Example CORS settings
 CORS_ALLOW_HEADERS = [
@@ -75,6 +77,9 @@ CORS_ALLOW_METHODS = [
     'PATCH',
     'DELETE',
 ]
+
+LOGIN_URL = '/accounts/login/'
+
 
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = None
