@@ -27,7 +27,7 @@
 
     <div class="row justify-content-center mt-4">
       <div class="col-sm-6">
-        <div class="card text-center">
+        <div class="card h-100 text-center"> <!-- Added h-100 class here -->
           <div class="card-body">
             <h5 class="card-title">Difference of Income and Expenses</h5>
             <p class="card-text text-info" v-if="!isAuthenticated">Log in to see the difference.</p>
@@ -41,6 +41,7 @@
     <ExpenseChart v-if="isAuthenticated" :expenses="expenses" />
   </div>
 </template>
+
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import ExpenseChart from './ExpenseChart.vue';

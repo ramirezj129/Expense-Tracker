@@ -36,7 +36,6 @@ const router = createRouter({
       path: '/about',
       name: 'About',
       component: AboutView,
-      meta: { requiresAuth: true } // Add meta field for authentication
 
     },
     {
