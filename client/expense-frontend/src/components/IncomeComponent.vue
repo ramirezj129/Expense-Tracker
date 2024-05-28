@@ -10,7 +10,7 @@
       <div class="form-group row mt-2">
         <label for="description-input" class="col-form-label col-3 text-center">Description</label>
         <div class="col-8">
-          <input v-model="description" type="text" id="description" class="form-control" placeholder="Enter Description">
+          <input v-model="description" type="text" id="description" class="form-control" placeholder="Enter Description" required>
         </div>
       </div>
       <div class="form-group row">

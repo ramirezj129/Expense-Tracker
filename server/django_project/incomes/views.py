@@ -8,6 +8,10 @@ from .serializer import IncomeSerializer
 @permission_classes([IsAuthenticated])
 def add_income(request):
     if request.method == 'POST':
+        # Delete existing income entries for the user
+        Income.objects.filter(user=request.user).delete()
+
+        # Serialize and save the new income entry
         serializer = IncomeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
