@@ -16,6 +16,13 @@ import { mapGetters } from 'vuex';
 Chart.register(BarController);
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
+const categoryLabels = {
+  1: 'Food',
+  2: 'Utilities',
+  3: 'Personal',
+  4: 'Other'
+};
+
 export default {
   components: {
     BarChart: Bar,
@@ -81,11 +88,17 @@ export default {
         this.chartData.labels = [];
         this.chartData.datasets[0].data = [];
       } else {
-        const expenseAmounts = expenses.map(expense => parseFloat(expense.amount));
-        const expenseDescriptions = expenses.map(expense => expense.description);
+        const aggregatedData = {};
+        expenses.forEach(expense => {
+          const category = categoryLabels[expense.category];
+          if (!aggregatedData[category]) {
+            aggregatedData[category] = 0;
+          }
+          aggregatedData[category] += parseFloat(expense.amount);
+        });
 
-        this.chartData.labels = expenseDescriptions;
-        this.chartData.datasets[0].data = expenseAmounts;
+        this.chartData.labels = Object.keys(aggregatedData);
+        this.chartData.datasets[0].data = Object.values(aggregatedData);
 
         // Increment the chartKey to force chart re-render
         this.chartKey++;
